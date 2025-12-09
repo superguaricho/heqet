@@ -10,8 +10,8 @@ fromEu :: E.Music E.Pitch -> Music
 fromEu (E.Prim (E.Note dur (pc, oct))) = let 
        (hegetPC,hegetAcc) = convertPC pc
        n = emptyNote 
-       	   & pitch .~ Ly (LyPitch MakePitch { _pc = hegetPC, _oct = oct - 4, _cents = 0 })
-	   & acc .~ Just hegetAcc
+           & pitch .~ Ly (LyPitch MakePitch { _pc = hegetPC, _oct = oct - 4, _cents = 0 })
+           & acc .~ Just hegetAcc
        it = InTime { _val = n, _dur = dur, _t = 0 }
        in [it]
 fromEu (E.Prim (E.Rest dur)) = [InTime { _val = emptyNote & pitch .~ Ly (LyRest), _dur = dur, _t = 0}]
@@ -22,15 +22,15 @@ fromEu (E.Modify (E.Transpose p) m) = transpose (absPitch2Pitch p) (fromEu m)
 fromEu (E.Modify (E.Instrument i) m) = (fromEu m) & traverse.val.inst .~ Just (getEuInst i)
 fromEu (E.Modify (E.Phrase pas) m) = foldl (&) (fromEu m) (map applyEuPhraseAttr pas)
 -- apply all phrase attribute application functions
-fromEu (E.Modify (E.Player s) m) = (fromEu m) & traverse.val.line .~ Just s
+-- fromEu (E.Modify (E.Player s) m) = (fromEu m) & traverse.val.line .~ Just s
 fromEu (E.Modify (E.KeySig pitchclass mode) m) = (fromEu m) & traverse.val.key .~ Just (convertKey pitchclass mode)
 
 fromEu1 :: E.Music E.Note1 -> Music
 fromEu1 (E.Prim (E.Note dur ((pc, oct), nas))) = let 
        (hegetPC,hegetAcc) = convertPC pc
        n = emptyNote 
-       	   & pitch .~ Ly (LyPitch MakePitch { _pc = hegetPC, _oct = oct, _cents = 0 })
-	   & acc .~ Just hegetAcc
+           & pitch .~ Ly (LyPitch MakePitch { _pc = hegetPC, _oct = oct, _cents = 0 })
+           & acc .~ Just hegetAcc
        it = InTime { _val = n, _dur = dur, _t = 0 }
        in foldl (&) [it] (map applyEuNoteAttr nas) -- apply all note attributes to the note 
 fromEu1 (E.Prim (E.Rest dur)) = [InTime { _val = emptyNote & pitch .~ Ly (LyRest), _dur = dur, _t = 0}]
@@ -41,7 +41,7 @@ fromEu1 (E.Modify (E.Transpose p) m) = transpose (absPitch2Pitch p) (fromEu1 m)
 fromEu1 (E.Modify (E.Instrument i) m) = (fromEu1 m) & traverse.val.inst .~ Just (getEuInst i)
 fromEu1 (E.Modify (E.Phrase pas) m) = foldl (&) (fromEu1 m) (map applyEuPhraseAttr pas)
 -- apply all phrase attribute application functions
-fromEu1 (E.Modify (E.Player s) m) = (fromEu1 m) & traverse.val.line .~ Just s
+-- fromEu1 (E.Modify (E.Player s) m) = (fromEu1 m) & traverse.val.line .~ Just s
 fromEu1 (E.Modify (E.KeySig pitchclass mode) m) = (fromEu1 m) & traverse.val.key .~ Just (convertKey pitchclass mode)
 
 applyEuNoteAttr :: E.NoteAttribute -> (Music -> Music)
@@ -55,11 +55,11 @@ absPitch2Pitch = error "not implimented yet" -- TODO
 
 convertKey :: E.PitchClass -> E.Mode -> (PitchClass, Mode, Maybe Accidental)
 convertKey pitchclass mode = let
-	   (pc', acc) = convertPC pitchclass
-	   mode' = case mode of
-	   	 E.Major -> MajorM
-		 E.Minor -> MinorM
-	   in (pc',mode',Just acc)
+       (pc', acc) = convertPC pitchclass
+       mode' = case mode of
+         E.Major -> MajorM
+         E.Minor -> MinorM
+       in (pc',mode',Just acc)
 
 applyEuPhraseAttr :: E.PhraseAttribute -> (Music -> Music)
 applyEuPhraseAttr (E.Dyn dyn) = applyEuDynamic dyn
@@ -73,7 +73,7 @@ applyEuDynamic (E.Crescendo _) = id -- TODO
 applyEuDynamic (E.Diminuendo _) = id -- TODO
 applyEuDynamic (E.StdLoudness loud) = applyEuStdLoudness loud
 applyEuDynamic (E.Loudness r) = let loudness = (1 `min` r) `max` 0 -- confine to interval [0,1]
-	       in (& traverse.val.dynamic .~ Just (fromRational loudness))
+          in (& traverse.val.dynamic .~ Just (fromRational loudness))
 
 applyEuStdLoudness :: E.StdLoudness -> (Music -> Music)
 applyEuStdLoudness E.PPP = applyDynamic Dynamics.ppp
@@ -193,7 +193,7 @@ getEuInst E.BrightAcousticPiano = piano
 getEuInst E.ElectricGrandPiano = piano
 getEuInst E.HonkyTonkPiano = piano
 getEuInst E.RhodesPiano = piano
-getEuInst (E.Custom s) = melody & name .~ s
+-- getEuInst (E.Custom s) = melody & name .~ s
 getEuInst _ = melody
 
 
