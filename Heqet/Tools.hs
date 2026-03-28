@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances, OverlappingInstances, Rank2Types #-}
+{-# LANGUAGE FlexibleInstances, Rank2Types #-}
 
 module Heqet.Tools where
 
@@ -212,12 +212,12 @@ transpose _ = id -- TODO!!
 
 firstNote :: Lens' Music Music
 firstNote = lens (\its -> let
-	    playables = (filter (\it -> it^.val.pitch & isPlayable) its)
-	    first = minimumBy (comparing (^.t)) playables
-	  in case playables of
-	     [] -> []
-	     _ -> [first]
-	  ) (parI) 
+    playables = (filter (\it -> it^.val.pitch & isPlayable) its)
+    first = minimumBy (comparing (^.t)) playables
+  in case playables of
+     [] -> []
+     _ -> [first]
+  ) (parI) 
 
 applyDynamic :: Dynamic -> Music -> Music
 applyDynamic dyn m = m & traverse.val.dynamic .~ Just dyn
@@ -233,8 +233,8 @@ applyNoteCommandToAll ni = (& traverse.val.noteCommands %~ (appendNI ni))
 
 appendNI :: NoteCommand -> [NoteCommand] -> [NoteCommand]
 appendNI nc ncs = if nc `elem` ncs
-	    	  then ncs
-		  else (nc:ncs)
+                  then ncs
+                  else (nc:ncs)
 
 -- join two pieces of Music in PARALLEL
 -- might be revised if we reintroduce the

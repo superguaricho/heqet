@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell, QuasiQuotes, OverlappingInstances #-}
+{-# LANGUAGE TemplateHaskell, QuasiQuotes #-}
 module Heqet.Output.Render where
 
 import Heqet.Types

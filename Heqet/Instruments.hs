@@ -1,4 +1,4 @@
-{-# LANGUAGE QuasiQuotes, OverlappingInstances #-}
+{-# LANGUAGE QuasiQuotes #-}
 
 module Heqet.Instruments where
 
@@ -41,7 +41,7 @@ assignAllConcertClefs :: Music -> Music
 assignAllConcertClefs m = let
     instruments = whatInstruments m
     functions = map forThatInstrument instruments
-    in concatMap ($m) functions
+    in concatMap ($ m) functions
 
 -- assigns clefs playability for all notes
 assignConcertClefsAllForInstrument :: Instrument -> Music -> Music

@@ -320,9 +320,9 @@ played.  Otherwise, it is queued for later.
 >   (pChan, out, _stop) <- getOutDev devId
 >   now <- getTimeNow
 >   let deliver t m = do
->       if t == 0
->         then out (now,m)
->         else push pChan (now+t) m
+>           if t == 0
+>             then out (now,m)
+>             else push pChan (now+t) m
 >
 >   case m of
 >     Std m -> deliver t m

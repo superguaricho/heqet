@@ -2,9 +2,9 @@
 , DeriveFunctor
 , ExistentialQuantification
 , FlexibleInstances
-, OverlappingInstances
 , UndecidableInstances
 , DeriveDataTypeable #-}
+{-# OPTIONS_GHC -Wno-simplifiable-class-constraints #-}
 
 module Heqet.Types where
 
@@ -186,7 +186,7 @@ is not playable (it does not take up time or participate
 in slurring) then you don't need to declare a 
 Playable instance for it.
 -}
-instance Playable a where
+instance {-# OVERLAPPABLE #-} Playable a where
     info = const Nothing
 
 -- this instance is not made to be used.
@@ -194,7 +194,7 @@ instance Playable a where
 -- missing Renderable instances if you don't
 -- import Render, which you can't always do
 -- because it can cause a cycle of imports.
-instance Typeable a => Renderable a where
+instance {-# OVERLAPPABLE #-} Typeable a => Renderable a where
     renderInStaff _ a = "UH OH (" ++ (show $ typeOf a) ++ ")"
     getMarkup _ = []
 
