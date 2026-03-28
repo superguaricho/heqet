@@ -1,0 +1,32 @@
+#+TITLE: Heqet: From Euterpea to Lilypond
+#+AUTHOR: Isaac Reilly / numa.tortolero (fork)
+
+* Motivation
+Heqet is a Haskell library designed to bridge the gap between algorithmic composition and professional musical notation. While *Euterpea* is excellent for the logical manipulation of music and MIDI generation, it often lacks robust tools for producing readable and aesthetic printed scores.
+
+Heqet allows you to take complex musical structures defined in Euterpea, transform them, and generate high-quality *Lilypond* code, enabling algorithmic music to live not just in audio, but on paper.
+
+* Features
+- *Score Rendering:* Generate .ly files ready to be processed by Lilypond.
+- *Polyphony and Multi-Staff Support:* Support for multiple independent voices within a single staff or distributed across multiple staves (ideal for piano, duos, etc.).
+- *Automatic Clef Assignment:* The system detects the instrument and range to automatically assign Treble, Bass, and other clefs.
+- *Voice Manipulation:* Tools to split, assign, and organize voices programmatically.
+- *Euterpea Integration:* Direct conversion from =Music Pitch= and =Music Note1= data types.
+
+* About this Fork
+This repository is a *modified fork* of the original project by Isaac Reilly. Critical improvements have been introduced to modernize the workflow and correct long-standing issues:
+
+- *Transposition Support:* Fixed rendering logic to correctly handle =Transpose= and =Tempo= modifiers, which were previously ignored during score generation.
+- *GHC 9.x Compatibility:* The codebase has been updated to eliminate deprecation warnings (=OverlappingInstances=) and type errors in modern compilers.
+- *Local Euterpea2:* Includes a patched version of Euterpea (Euterpea2) to resolve parse errors in IO modules that prevented compilation on modern Linux systems.
+- *Enhanced Voice Logic:* New modules and updated examples for managing independent voices and multi-staff layouts.
+
+* Getting Started
+To build the project and run the examples:
+
+#+begin_src bash
+cabal build
+cabal exec -- runhaskell examples/Transposition.hs
+#+end_src
+
+This will output the Lilypond code directly to your terminal, which you can then redirect to a =.ly= file for engraving.
